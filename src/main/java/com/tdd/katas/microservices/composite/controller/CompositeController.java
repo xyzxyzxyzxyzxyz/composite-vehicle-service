@@ -1,11 +1,20 @@
 package com.tdd.katas.microservices.composite.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.tdd.katas.microservices.composite.model.VehicleData;
+import com.tdd.katas.microservices.composite.service.CompositeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/vehicles")
 public class CompositeController {
+
+    @Autowired
+    private CompositeService compositeService;
+
+    @GetMapping("/{vin}")
+    public VehicleData getVehicleData(@PathVariable String vin){
+        return compositeService.getVehicleData(vin);
+    }
 
 }
