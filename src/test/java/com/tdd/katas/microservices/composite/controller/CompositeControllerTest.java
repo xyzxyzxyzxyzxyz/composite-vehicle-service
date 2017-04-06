@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -78,7 +79,7 @@ public class CompositeControllerTest {
                 .andExpect(jsonPath("$.partDataList[1].partId", is(expectedVehicleData.getPartDataList().get(1).getPartId())))
                 .andExpect(jsonPath("$.partDataList[1].description", is(expectedVehicleData.getPartDataList().get(1).getDescription())));
 
-        verify(compositeService.getVehicleData(VIN));
+        verify(compositeService).getVehicleData(VIN);
 
     }
 
