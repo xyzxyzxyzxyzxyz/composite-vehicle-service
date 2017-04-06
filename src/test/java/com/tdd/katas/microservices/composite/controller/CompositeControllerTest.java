@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -82,5 +83,23 @@ public class CompositeControllerTest {
         verify(compositeService).getVehicleData(VIN);
 
     }
+
+    @Test
+    public void It_returns_404_if_the_VIN_does_not_exist() throws Exception {
+
+        given(compositeService.getVehicleData(any())).willReturn(null);
+
+        this.mvc
+            .perform(
+                get("/vehicles/" + "PEPITO")
+                .accept(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isNotFound());
+
+        verify(compositeService).getVehicleData(any());
+
+    }
+
+
 
 }
