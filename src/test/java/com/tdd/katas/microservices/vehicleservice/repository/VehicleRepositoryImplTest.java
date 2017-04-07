@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 @ContextConfiguration(classes = VehicleRepositoryImpl.class)
 @RunWith(SpringRunner.class)
 
@@ -41,4 +43,22 @@ public class VehicleRepositoryImplTest {
 
 
     }
+
+    @Test
+    public void The_repository_returns_null_for_invalid_input() throws Exception {
+        VehicleData existingVehicleData = new VehicleData(
+                new CustomerData("1","Sergio", "Osuna Medina"),
+                new CarData("W111","Seat Leon","Red"),
+                Arrays.asList(
+                        new PartData("1","Wheels"),
+                        new PartData("2","Doors"))
+        );
+        vehicleRepository.store("X", existingVehicleData);
+
+        VehicleData actualVehicleData =  vehicleRepository.getVehicleData("Y");
+
+        assertNull("The vehicle data should not exist in the database", actualVehicleData);
+    }
+
+
 }
