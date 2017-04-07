@@ -12,10 +12,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 
@@ -51,4 +54,22 @@ public class VehicleServiceImplTest {
         assertEquals("The service should return the VehicleData as provided by the repository", expectedVehicleData, actualVehicleData);
     }
 
+
+    @Test
+    public void The_service_propagates_the_errors_from_the_repository() {
+
+        given(vehicleRepository.getVehicleData(any())).willThrow(new IllegalStateException("database not ready"));
+
+        try {
+            VehicleData actualVehicleData = vehicleService.getVehicleData("X");
+            fail("Should have thrown an exception");
+        } catch (IllegalStateException e) {
+            // The error has been propagated by the service
+        }
+
+        // The service must delegate the call to the repository with the same input
+        verify(vehicleRepository).getVehicleData(any());
+
+
+    }
 }
