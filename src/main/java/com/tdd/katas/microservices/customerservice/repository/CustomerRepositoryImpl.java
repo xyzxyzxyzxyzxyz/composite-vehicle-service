@@ -11,7 +11,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     private Map<String,CustomerData> map = new HashMap<>();
 
-    public void store(String customer_id, CustomerData expectedCustomerData) {
+    void store(String customer_id, CustomerData expectedCustomerData) {
         map.put(customer_id, expectedCustomerData);
     }
 
