@@ -100,6 +100,23 @@ public class CompositeControllerTest {
 
     }
 
+    @Test
+    public void It_returns_500_if_the_service_throws_an_error() throws Exception {
 
+        final String VIN = "1";
+
+        given(compositeService.getVehicleData(any())).willThrow(
+                new IllegalStateException("database is not ready"));
+
+        this.mvc
+                .perform(
+                        get("/vehicles/" + VIN)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isInternalServerError());
+
+        verify(compositeService).getVehicleData(any());
+
+    }
 
 }
