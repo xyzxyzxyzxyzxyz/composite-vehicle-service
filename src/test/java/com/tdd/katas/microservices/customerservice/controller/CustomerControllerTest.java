@@ -80,5 +80,23 @@ public class CustomerControllerTest {
 
     }
 
+    @Test
+    public void It_returns_500_if_the_service_throws_an_error() throws Exception {
+
+        final String CUSTOMER_ID = "1";
+
+        given(customerService.getCustomerData(any())).willThrow(
+                new IllegalStateException("database is not ready"));
+
+        this.mvc
+                .perform(
+                        get("/customers/" + CUSTOMER_ID)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isInternalServerError());
+
+        verify(customerService).getCustomerData(any());
+
+    }
 
 }
