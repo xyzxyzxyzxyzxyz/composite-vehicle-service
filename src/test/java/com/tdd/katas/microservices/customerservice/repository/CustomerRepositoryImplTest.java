@@ -1,13 +1,19 @@
 package com.tdd.katas.microservices.customerservice.repository;
 
+import com.tdd.katas.microservices.vehicleservice.model.CarData;
 import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
+import com.tdd.katas.microservices.vehicleservice.model.PartData;
+import com.tdd.katas.microservices.vehicleservice.model.VehicleData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @ContextConfiguration(classes = CustomerRepositoryImpl.class)
 @RunWith(SpringRunner.class)
@@ -30,6 +36,14 @@ public class CustomerRepositoryImplTest
         assertEquals("Should return the stored customer data", expectedCustomerData, actualCustomerData);
     }
 
+    @Test
+    public void The_repository_returns_null_for_invalid_input() throws Exception {
+        CustomerData existingCustomerData = new CustomerData("1","Sergio", "Osuna Medina");
+        customerRepository.store(existingCustomerData.getCustomerId(), existingCustomerData);
 
+        CustomerData actualCustomerData =  customerRepository.getCustomerData("2");
+
+        assertNull("The customer data should not exist in the database", actualCustomerData);
+    }
 
 }
