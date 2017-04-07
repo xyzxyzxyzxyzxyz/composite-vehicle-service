@@ -1,4 +1,4 @@
-package com.tdd.katas.microservices.composite.model;
+package com.tdd.katas.microservices.vehicleservice.model;
 
 public class CarData {
     private String plateNumber;

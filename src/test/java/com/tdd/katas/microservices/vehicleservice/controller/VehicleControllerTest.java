@@ -1,10 +1,10 @@
-package com.tdd.katas.microservices.composite.controller;
+package com.tdd.katas.microservices.vehicleservice.controller;
 
-import com.tdd.katas.microservices.composite.model.CarData;
-import com.tdd.katas.microservices.composite.model.CustomerData;
-import com.tdd.katas.microservices.composite.model.PartData;
-import com.tdd.katas.microservices.composite.model.VehicleData;
-import com.tdd.katas.microservices.composite.service.CompositeService;
+import com.tdd.katas.microservices.vehicleservice.model.CarData;
+import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
+import com.tdd.katas.microservices.vehicleservice.model.PartData;
+import com.tdd.katas.microservices.vehicleservice.model.VehicleData;
+import com.tdd.katas.microservices.vehicleservice.service.VehicleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,29 +22,28 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = CompositeController.class)
+@WebMvcTest(controllers = VehicleController.class)
 @WithMockUser
-public class CompositeControllerTest {
+public class VehicleControllerTest {
 
 
     @Autowired
-    private CompositeController compositeController;
+    private VehicleController vehicleController;
 
     @MockBean
-    private CompositeService compositeService;
+    private VehicleService vehicleService;
 
     @Autowired
     private MockMvc mvc;
 
     @Test
     public void Can_create_instance() {
-        assertNotNull("Should be able to create instance", compositeController);
+        assertNotNull("Should be able to create instance", vehicleController);
     }
 
     @Test
@@ -61,7 +60,7 @@ public class CompositeControllerTest {
         );
 
 
-        given(compositeService.getVehicleData(VIN)).willReturn(expectedVehicleData);
+        given(vehicleService.getVehicleData(VIN)).willReturn(expectedVehicleData);
 
         this.mvc.perform(
                     get("/vehicles/" + VIN)
@@ -80,14 +79,14 @@ public class CompositeControllerTest {
                 .andExpect(jsonPath("$.partDataList[1].partId", is(expectedVehicleData.getPartDataList().get(1).getPartId())))
                 .andExpect(jsonPath("$.partDataList[1].description", is(expectedVehicleData.getPartDataList().get(1).getDescription())));
 
-        verify(compositeService).getVehicleData(VIN);
+        verify(vehicleService).getVehicleData(VIN);
 
     }
 
     @Test
     public void It_returns_404_if_the_VIN_does_not_exist() throws Exception {
 
-        given(compositeService.getVehicleData(any())).willReturn(null);
+        given(vehicleService.getVehicleData(any())).willReturn(null);
 
         this.mvc
             .perform(
@@ -96,7 +95,7 @@ public class CompositeControllerTest {
             )
             .andExpect(status().isNotFound());
 
-        verify(compositeService).getVehicleData(any());
+        verify(vehicleService).getVehicleData(any());
 
     }
 
@@ -105,7 +104,7 @@ public class CompositeControllerTest {
 
         final String VIN = "1";
 
-        given(compositeService.getVehicleData(any())).willThrow(
+        given(vehicleService.getVehicleData(any())).willThrow(
                 new IllegalStateException("database is not ready"));
 
         this.mvc
@@ -115,7 +114,7 @@ public class CompositeControllerTest {
                 )
                 .andExpect(status().isInternalServerError());
 
-        verify(compositeService).getVehicleData(any());
+        verify(vehicleService).getVehicleData(any());
 
     }
 
