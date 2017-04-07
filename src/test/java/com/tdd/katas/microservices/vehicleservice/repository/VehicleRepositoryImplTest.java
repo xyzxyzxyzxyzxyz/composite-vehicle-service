@@ -40,8 +40,6 @@ public class VehicleRepositoryImplTest {
         VehicleData actualVehicleData =  vehicleRepository.getVehicleData(VIN);
 
         assertEquals("Should return the stored vehicle data", expectedVehicleData, actualVehicleData);
-
-
     }
 
     @Test
@@ -59,6 +57,5 @@ public class VehicleRepositoryImplTest {
 
         assertNull("The vehicle data should not exist in the database", actualVehicleData);
     }
-
 
 }
