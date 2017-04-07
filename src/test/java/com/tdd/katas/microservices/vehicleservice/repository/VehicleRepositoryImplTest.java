@@ -17,7 +17,6 @@ import static org.junit.Assert.assertNull;
 
 @ContextConfiguration(classes = VehicleRepositoryImpl.class)
 @RunWith(SpringRunner.class)
-
 public class VehicleRepositoryImplTest {
 
     @Autowired
