@@ -1,16 +1,11 @@
 package com.tdd.katas.microservices.customerservice.repository;
 
-import com.tdd.katas.microservices.vehicleservice.model.CarData;
 import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
-import com.tdd.katas.microservices.vehicleservice.model.PartData;
-import com.tdd.katas.microservices.vehicleservice.model.VehicleData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
