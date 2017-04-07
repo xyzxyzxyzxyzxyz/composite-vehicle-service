@@ -64,4 +64,21 @@ public class CustomerControllerTest {
 
     }
 
+    @Test
+    public void It_returns_404_if_the_customerId_does_not_exist() throws Exception {
+
+        given(customerService.getCustomerData(any())).willReturn(null);
+
+        this.mvc
+                .perform(
+                        get("/customers/" + "PEPITO")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+
+        verify(customerService).getCustomerData(any());
+
+    }
+
+
 }
