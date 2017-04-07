@@ -1,0 +1,47 @@
+package com.tdd.katas.microservices.customerservice.service;
+
+import com.tdd.katas.microservices.customerservice.repository.CustomerRepository;
+import com.tdd.katas.microservices.vehicleservice.model.CarData;
+import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
+import com.tdd.katas.microservices.vehicleservice.model.PartData;
+import com.tdd.katas.microservices.vehicleservice.model.VehicleData;
+import com.tdd.katas.microservices.vehicleservice.repository.VehicleRepository;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = CustomerServiceImpl.class)
+public class CustomerServiceImplTest {
+    @Autowired
+    private CustomerService customerService;
+
+    @MockBean
+    private CustomerRepository customerRepository;
+
+    @Test
+    public void The_service_delegates_the_calls_to_the_repository() {
+        String CUSTOMER_ID = "X";
+
+        CustomerData expectedCustomerData = new CustomerData(CUSTOMER_ID,"Sergio", "Osuna Medina");
+
+        given(customerRepository.getCustomerData(CUSTOMER_ID)).willReturn(expectedCustomerData);
+
+        CustomerData actualCustomerData = customerService.getCustomerData(CUSTOMER_ID);
+
+        // The service must delegate the call to the repository with the same input
+        verify(customerRepository).getCustomerData(CUSTOMER_ID);
+
+        assertEquals("The service should return the CustomerData as provided by the repository", expectedCustomerData, actualCustomerData);
+    }
+
+}
