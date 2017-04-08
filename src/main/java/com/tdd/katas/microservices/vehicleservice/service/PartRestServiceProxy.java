@@ -8,7 +8,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -20,9 +20,9 @@ class PartRestServiceProxy {
         restTemplate = restTemplateBuilder.build();
     }
 
-    public Map<String, Object> getPartData(String vinCode) throws HttpClientErrorException, HttpServerErrorException{
+    public List<Map<String,Object>> getPartData(String vinCode) throws HttpClientErrorException, HttpServerErrorException{
         try {
-            ResponseEntity<HashMap> responseEntity = restTemplate.getForEntity(URL + "/" + vinCode, HashMap.class);
+            ResponseEntity<List> responseEntity = restTemplate.getForEntity(URL + "/" + vinCode, List.class);
             return responseEntity.getBody();
         }
         catch(HttpClientErrorException e) {

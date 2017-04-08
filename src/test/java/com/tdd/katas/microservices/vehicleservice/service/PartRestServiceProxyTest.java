@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.HttpServerErrorException;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -45,17 +45,22 @@ public class PartRestServiceProxyTest {
         final String vinCode = "1";
 
         String mockPartData =
-                "{" +
-                        "\"plateNumber\" : \"1234\" ,"  +
-                        "\"model\" : \"Seat Leon\" ," +
-                        "\"color\" : \"Red\" " +
-                        "}";
+                "[" +
+                    "{" +
+                        "\"partId\" : \"1\" ,"  +
+                        "\"description\" : \"Wheel\"" +
+                    "}," +
+                    "{" +
+                        "\"partId\" : \"2\" ,"  +
+                        "\"description\" : \"door\"" +
+                    "}" +
+                "]";
 
-        Map<String, Object> expectedCustomerData = objectMapper.readValue(mockPartData, new TypeReference<HashMap<String,Object>>(){});
+        List<Map<String,Object>> expectedCustomerData = objectMapper.readValue(mockPartData, new TypeReference<List<Map<String,Object>>>(){});
 
         this.server.expect(requestTo("/parts/" + vinCode))
                 .andRespond(withSuccess(mockPartData, MediaType.APPLICATION_JSON));
-        Map<String,Object> actualPartData = partRestServiceProxy.getPartData(vinCode);
+        List<Map<String,Object>> actualPartData = partRestServiceProxy.getPartData(vinCode);
 
         assertEquals("Customer data must match", expectedCustomerData, actualPartData);
 
@@ -69,7 +74,7 @@ public class PartRestServiceProxyTest {
         this.server.expect(requestTo("/parts/" + vinCode))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        Map<String,Object> actualPartData = partRestServiceProxy.getPartData(vinCode);
+        List<Map<String,Object>> actualPartData = partRestServiceProxy.getPartData(vinCode);
 
         assertNull("Part must not exist", actualPartData);
 
