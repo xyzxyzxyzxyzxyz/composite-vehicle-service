@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class CarRestServiceProxy {
         restTemplate = restTemplateBuilder.build();
     }
 
-    public Map<String, Object> getCarData(String vinCode) {
+    public Map<String, Object> getCarData(String vinCode) throws HttpClientErrorException, HttpServerErrorException {
         try {
             ResponseEntity<HashMap> responseEntity = restTemplate.getForEntity(URL + "/" + vinCode, HashMap.class);
             return responseEntity.getBody();

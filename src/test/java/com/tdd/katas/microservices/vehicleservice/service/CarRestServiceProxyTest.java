@@ -77,4 +77,13 @@ public class CarRestServiceProxyTest {
 
     }
 
+    @Test(expected = HttpServerErrorException.class)
+    public void It_throws_an_exception_if_the_service_returns_a_service_error() throws Exception {
+
+        this.server.expect(requestTo("/cars/ANYTHING"))
+                .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        carRestServiceProxy.getCarData("ANYTHING");
+    }
+
 }
