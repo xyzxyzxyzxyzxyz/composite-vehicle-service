@@ -34,4 +34,13 @@ public class CustomerData {
     public void setSurnames(String surnames) {
         this.surnames = surnames;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return
+                obj != null
+                && obj instanceof CustomerData
+                && this.customerId != null
+                && this.customerId.equals(((CustomerData) obj).getCustomerId());
+    }
 }

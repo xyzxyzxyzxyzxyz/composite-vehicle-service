@@ -36,4 +36,26 @@ public class CompositeVehicleData {
     public void setPartDataList(List<PartData> partDataList) {
         this.partDataList = partDataList;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return
+                obj != null
+                && obj instanceof CompositeVehicleData
+
+                && this.customerData!= null
+                && this.carData!= null
+                && this.partDataList!= null
+
+                && this.customerData.equals(((CompositeVehicleData) obj).getCustomerData())
+                && this.carData.equals(((CompositeVehicleData) obj).getCarData())
+                &&
+                (
+                    partDataList.size() == ((CompositeVehicleData) obj).getPartDataList().size()
+                    && partDataList.containsAll(((CompositeVehicleData) obj).getPartDataList())
+                    && ((CompositeVehicleData) obj).getPartDataList().containsAll(partDataList)
+                );
+
+    }
+
 }

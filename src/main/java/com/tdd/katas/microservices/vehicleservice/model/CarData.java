@@ -35,4 +35,14 @@ public class CarData {
     public void setColor(String color) {
         this.color = color;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return
+                obj != null
+                && obj instanceof CarData
+                && this.plateNumber != null
+                && this.plateNumber.equals(((CarData) obj).getPlateNumber());
+    }
+
 }

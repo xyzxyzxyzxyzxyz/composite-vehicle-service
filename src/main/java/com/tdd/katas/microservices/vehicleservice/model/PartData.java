@@ -24,4 +24,14 @@ public class PartData {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return
+                obj != null
+                && obj instanceof PartData
+                && this.partId!= null
+                && this.partId.equals(((PartData) obj).getPartId());
+    }
+
 }
