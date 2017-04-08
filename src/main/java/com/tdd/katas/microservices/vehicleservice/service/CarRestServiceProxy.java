@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class CarRestServiceProxy {
+class CarRestServiceProxy {
 
     private final RestTemplate restTemplate;
     private static String URL = "/cars";
