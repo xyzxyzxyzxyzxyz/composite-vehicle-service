@@ -39,5 +39,25 @@ public class PartRestServiceProxyTest {
         assertNotNull("Should be able to create instance", partRestServiceProxy);
     }
 
+    @Test
+    public void It_returns_valid_data_for_a_valid_input() throws Exception {
 
+        final String vinCode = "1";
+
+        String mockPartData =
+                "{" +
+                        "\"plateNumber\" : \"1234\" ,"  +
+                        "\"model\" : \"Seat Leon\" ," +
+                        "\"color\" : \"Red\" " +
+                        "}";
+
+        Map<String, Object> expectedCustomerData = objectMapper.readValue(mockPartData, new TypeReference<HashMap<String,Object>>(){});
+
+        this.server.expect(requestTo("/parts/" + vinCode))
+                .andRespond(withSuccess(mockPartData, MediaType.APPLICATION_JSON));
+        Map<String,Object> actualPartData = partRestServiceProxy.getPartData(vinCode);
+
+        assertEquals("Customer data must match", expectedCustomerData, actualPartData);
+
+    }
 }
