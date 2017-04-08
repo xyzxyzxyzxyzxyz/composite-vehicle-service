@@ -1,9 +1,6 @@
 package com.tdd.katas.microservices.vehicleservice.service;
 
-import com.tdd.katas.microservices.vehicleservice.model.CarData;
-import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
-import com.tdd.katas.microservices.vehicleservice.model.PartData;
-import com.tdd.katas.microservices.vehicleservice.model.CompositeVehicleData;
+import com.tdd.katas.microservices.vehicleservice.model.*;
 import com.tdd.katas.microservices.vehicleservice.repository.VehicleRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,15 +32,19 @@ public class VehicleServiceImplTest {
     public void The_service_delegates_the_calls_to_the_repository() {
         String VIN = "X";
 
+        String mockCustomerId = "1";
+
+        VehicleData mockVehicleData = new VehicleData(mockCustomerId);
+
         CompositeVehicleData expectedCompositeVehicleData = new CompositeVehicleData(
-                new CustomerData("1","Sergio", "Osuna Medina"),
+                new CustomerData(mockCustomerId,"Sergio", "Osuna Medina"),
                 new CarData("W111","Seat Leon","Red"),
                 Arrays.asList(
                         new PartData("1","Wheels"),
                         new PartData("2","Doors"))
         );
 
-        given(vehicleRepository.getVehicleData(VIN)).willReturn(expectedCompositeVehicleData);
+        given(vehicleRepository.getVehicleData(VIN)).willReturn(mockVehicleData);
 
         CompositeVehicleData actualCompositeVehicleData = vehicleService.getVehicleData(VIN);
 

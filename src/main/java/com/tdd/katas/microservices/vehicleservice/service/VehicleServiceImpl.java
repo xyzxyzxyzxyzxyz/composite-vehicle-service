@@ -13,7 +13,10 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public CompositeVehicleData getVehicleData(String vin) {
-        return vehicleRepository.getVehicleData(vin);
+        // TODO: Change this implementation!
+        // We must start calling the remote services after using the repository
+        //return vehicleRepository.getVehicleData(vin);
+        return null;
     }
 
 }

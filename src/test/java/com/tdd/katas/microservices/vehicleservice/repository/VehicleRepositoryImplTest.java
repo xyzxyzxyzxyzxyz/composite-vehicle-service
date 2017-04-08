@@ -1,9 +1,6 @@
 package com.tdd.katas.microservices.vehicleservice.repository;
 
-import com.tdd.katas.microservices.vehicleservice.model.CarData;
-import com.tdd.katas.microservices.vehicleservice.model.CompositeVehicleData;
-import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
-import com.tdd.katas.microservices.vehicleservice.model.PartData;
+import com.tdd.katas.microservices.vehicleservice.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,35 +23,24 @@ public class VehicleRepositoryImplTest {
     public void The_repository_returns_valid_output_for_valid_input() throws Exception {
         String VIN = "X";
 
-        CompositeVehicleData expectedCompositeVehicleData = new CompositeVehicleData(
-                new CustomerData("1","Sergio", "Osuna Medina"),
-                new CarData("W111","Seat Leon","Red"),
-                Arrays.asList(
-                        new PartData("1","Wheels"),
-                        new PartData("2","Doors"))
-        );
+        VehicleData expectedVehicleData = new VehicleData("CUSTOMER_X");
 
-        vehicleRepository.store(VIN, expectedCompositeVehicleData);
+        vehicleRepository.store(VIN, expectedVehicleData);
 
-        CompositeVehicleData actualCompositeVehicleData =  vehicleRepository.getVehicleData(VIN);
+        VehicleData actualVehicleData =  vehicleRepository.getVehicleData(VIN);
 
-        assertEquals("Should return the stored vehicle data", expectedCompositeVehicleData, actualCompositeVehicleData);
+        assertEquals("Should return the stored vehicle data", expectedVehicleData, actualVehicleData);
     }
 
     @Test
     public void The_repository_returns_null_for_invalid_input() throws Exception {
-        CompositeVehicleData existingCompositeVehicleData = new CompositeVehicleData(
-                new CustomerData("1","Sergio", "Osuna Medina"),
-                new CarData("W111","Seat Leon","Red"),
-                Arrays.asList(
-                        new PartData("1","Wheels"),
-                        new PartData("2","Doors"))
-        );
-        vehicleRepository.store("X", existingCompositeVehicleData);
+        VehicleData existingVehicleData = new VehicleData("CUSTOMER_X");
 
-        CompositeVehicleData actualCompositeVehicleData =  vehicleRepository.getVehicleData("Y");
+        vehicleRepository.store("X", existingVehicleData);
 
-        assertNull("The vehicle data should not exist in the database", actualCompositeVehicleData);
+        VehicleData actualVehicleData =  vehicleRepository.getVehicleData("CUSTOMER_Y");
+
+        assertNull("The vehicle data should not exist in the database", actualVehicleData);
     }
 
 }
