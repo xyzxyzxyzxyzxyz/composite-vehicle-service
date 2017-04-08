@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -15,7 +16,9 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RunWith(SpringRunner.class)
@@ -60,5 +63,21 @@ public class CustomerRestServiceProxyTest {
         assertEquals("Customer data must match", expectedCustomerData, actualCustomerData);
         
     }
-    
+
+
+    @Test
+    public void It_returns_null_if_the_customerId_does_not_exist() throws Exception {
+
+        final String customerId = "NON_EXISTING_ID";
+
+        this.server.expect(requestTo("/customers/" + customerId))
+                .andRespond(withStatus(HttpStatus.NOT_FOUND));
+
+        Map<String,Object> actualCustomerData = customerRestServiceProxy.getCustomerData(customerId);
+
+        assertNull("Customer must not exist", actualCustomerData);
+
+    }
+
+
 }
