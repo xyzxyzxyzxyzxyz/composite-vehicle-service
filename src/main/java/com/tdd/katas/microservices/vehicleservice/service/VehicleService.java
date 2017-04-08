@@ -1,7 +1,7 @@
 package com.tdd.katas.microservices.vehicleservice.service;
 
-import com.tdd.katas.microservices.vehicleservice.model.VehicleData;
+import com.tdd.katas.microservices.vehicleservice.model.CompositeVehicleData;
 
 public interface VehicleService {
-    VehicleData getVehicleData(String vin);
+    CompositeVehicleData getVehicleData(String vin);
 }

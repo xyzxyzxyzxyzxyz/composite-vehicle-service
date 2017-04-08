@@ -3,7 +3,7 @@ package com.tdd.katas.microservices.vehicleservice.service;
 import com.tdd.katas.microservices.vehicleservice.model.CarData;
 import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
 import com.tdd.katas.microservices.vehicleservice.model.PartData;
-import com.tdd.katas.microservices.vehicleservice.model.VehicleData;
+import com.tdd.katas.microservices.vehicleservice.model.CompositeVehicleData;
 import com.tdd.katas.microservices.vehicleservice.repository.VehicleRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +35,7 @@ public class VehicleServiceImplTest {
     public void The_service_delegates_the_calls_to_the_repository() {
         String VIN = "X";
 
-        VehicleData expectedVehicleData = new VehicleData(
+        CompositeVehicleData expectedCompositeVehicleData = new CompositeVehicleData(
                 new CustomerData("1","Sergio", "Osuna Medina"),
                 new CarData("W111","Seat Leon","Red"),
                 Arrays.asList(
@@ -44,14 +43,14 @@ public class VehicleServiceImplTest {
                         new PartData("2","Doors"))
         );
 
-        given(vehicleRepository.getVehicleData(VIN)).willReturn(expectedVehicleData);
+        given(vehicleRepository.getVehicleData(VIN)).willReturn(expectedCompositeVehicleData);
 
-        VehicleData actualVehicleData = vehicleService.getVehicleData(VIN);
+        CompositeVehicleData actualCompositeVehicleData = vehicleService.getVehicleData(VIN);
 
         // The service must delegate the call to the repository with the same input
         verify(vehicleRepository).getVehicleData(VIN);
 
-        assertEquals("The service should return the VehicleData as provided by the repository", expectedVehicleData, actualVehicleData);
+        assertEquals("The service should return the CompositeVehicleData as provided by the repository", expectedCompositeVehicleData, actualCompositeVehicleData);
     }
 
 
@@ -61,7 +60,7 @@ public class VehicleServiceImplTest {
         given(vehicleRepository.getVehicleData(any())).willThrow(new IllegalStateException("database not ready"));
 
         try {
-            VehicleData actualVehicleData = vehicleService.getVehicleData("X");
+            CompositeVehicleData actualCompositeVehicleData = vehicleService.getVehicleData("X");
             fail("Should have thrown an exception");
         } catch (IllegalStateException e) {
             // The error has been propagated by the service

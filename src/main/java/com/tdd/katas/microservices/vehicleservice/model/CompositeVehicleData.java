@@ -2,12 +2,12 @@ package com.tdd.katas.microservices.vehicleservice.model;
 
 import java.util.List;
 
-public class VehicleData {
+public class CompositeVehicleData {
     private CustomerData customerData;
     private CarData carData;
     private List<PartData> partDataList;
 
-    public VehicleData(CustomerData customerData, CarData carData, List<PartData> partDataList) {
+    public CompositeVehicleData(CustomerData customerData, CarData carData, List<PartData> partDataList) {
         this.customerData = customerData;
         this.carData = carData;
         this.partDataList = partDataList;

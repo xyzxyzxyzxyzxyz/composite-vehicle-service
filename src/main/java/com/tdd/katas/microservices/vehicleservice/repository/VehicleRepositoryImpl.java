@@ -1,6 +1,6 @@
 package com.tdd.katas.microservices.vehicleservice.repository;
 
-import com.tdd.katas.microservices.vehicleservice.model.VehicleData;
+import com.tdd.katas.microservices.vehicleservice.model.CompositeVehicleData;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -9,14 +9,14 @@ import java.util.Map;
 @Repository
 public class VehicleRepositoryImpl implements VehicleRepository{
 
-    private Map<String, VehicleData> map = new HashMap<>();
+    private Map<String, CompositeVehicleData> map = new HashMap<>();
 
-    void store(String vin, VehicleData vehicleData) {
-        map.put(vin, vehicleData);
+    void store(String vin, CompositeVehicleData compositeVehicleData) {
+        map.put(vin, compositeVehicleData);
     }
 
     @Override
-    public VehicleData getVehicleData(String vin) {
+    public CompositeVehicleData getVehicleData(String vin) {
         return map.get(vin);
     }
 }
