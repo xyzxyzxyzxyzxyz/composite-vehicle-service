@@ -53,13 +53,13 @@ public class CarRestServiceProxyTest {
                 "\"color\" : \"Red\" " +
             "}";
 
-        Map<String, Object> expectedCustomerData = objectMapper.readValue(mockCarData, new TypeReference<HashMap<String,Object>>(){});
+        Map<String,Object> expectedCarData = objectMapper.readValue(mockCarData, new TypeReference<HashMap<String,Object>>(){});
 
         this.server.expect(requestTo("/cars/" + vinCode))
                 .andRespond(withSuccess(mockCarData, MediaType.APPLICATION_JSON));
         Map<String,Object> actualCarData = carRestServiceProxy.getCarData(vinCode);
 
-        assertEquals("Customer data must match", expectedCustomerData, actualCarData);
+        assertEquals("Car data must match", expectedCarData, actualCarData);
         
     }
 

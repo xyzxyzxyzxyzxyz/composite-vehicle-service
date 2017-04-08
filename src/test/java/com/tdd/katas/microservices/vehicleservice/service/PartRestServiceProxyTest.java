@@ -56,13 +56,13 @@ public class PartRestServiceProxyTest {
                     "}" +
                 "]";
 
-        List<Map<String,Object>> expectedCustomerData = objectMapper.readValue(mockPartData, new TypeReference<List<Map<String,Object>>>(){});
+        List<Map<String,Object>> expectedPartDataList = objectMapper.readValue(mockPartData, new TypeReference<List<Map<String,Object>>>(){});
 
         this.server.expect(requestTo("/parts/" + vinCode))
                 .andRespond(withSuccess(mockPartData, MediaType.APPLICATION_JSON));
-        List<Map<String,Object>> actualPartData = partRestServiceProxy.getPartData(vinCode);
+        List<Map<String,Object>> actualPartDataList = partRestServiceProxy.getPartData(vinCode);
 
-        assertEquals("Customer data must match", expectedCustomerData, actualPartData);
+        assertEquals("Part data lists must match", expectedPartDataList, actualPartDataList);
 
     }
 
