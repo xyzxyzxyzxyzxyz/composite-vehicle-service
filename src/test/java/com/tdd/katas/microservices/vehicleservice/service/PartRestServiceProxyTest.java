@@ -74,4 +74,13 @@ public class PartRestServiceProxyTest {
         assertNull("Part must not exist", actualPartData);
 
     }
+
+    @Test(expected = HttpServerErrorException.class)
+    public void It_throws_an_exception_if_the_service_returns_a_service_error() throws Exception {
+
+        this.server.expect(requestTo("/parts/ANYTHING"))
+                .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        partRestServiceProxy.getPartData("ANYTHING");
+    }
 }
