@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,6 +79,17 @@ public class CustomerRestServiceProxyTest {
         assertNull("Customer must not exist", actualCustomerData);
 
     }
+
+
+    @Test(expected = HttpServerErrorException.class)
+    public void It_throws_an_exception_if_the_service_returns_a_service_error() throws Exception {
+
+        this.server.expect(requestTo("/customers/ANYTHING"))
+                .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        customerRestServiceProxy.getCustomerData("ANYTHING");
+    }
+
 
 
 }
