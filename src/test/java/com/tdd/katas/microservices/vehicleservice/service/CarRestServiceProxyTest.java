@@ -63,4 +63,18 @@ public class CarRestServiceProxyTest {
         
     }
 
+    @Test
+    public void It_returns_null_if_the_vin_does_not_exist() throws Exception {
+
+        final String vinCode = "NON_EXISTING_ID";
+
+        this.server.expect(requestTo("/cars/" + vinCode))
+                .andRespond(withStatus(HttpStatus.NOT_FOUND));
+
+        Map<String,Object> actualCarData = carRestServiceProxy.getCarData(vinCode);
+
+        assertNull("Car must not exist", actualCarData);
+
+    }
+
 }
