@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 
@@ -68,7 +67,7 @@ public class VehicleServiceImplTest {
         // Mock the CarRestServiceProxy output
         String mockCarDataJson =
                 "{" +
-                    "\"plateNumber\" : \"1234\" ,"  +
+                    "\"plateNumber\" : \"W111\" ,"  +
                     "\"model\" : \"Seat Leon\" ," +
                     "\"color\" : \"Red\" " +
                 "}";
