@@ -184,6 +184,29 @@ public class VehicleServiceImplTest {
         verify(carRestServiceProxy).getCarData(mockVinCode);
     }
 
+    @Test
+    public void The_service_propagates_the_server_errors_from_the_remote_part_service() {
+        final String mockVinCode = "X";
+        final String mockCustomerId = "CUSTOMER_X";
 
+        // Will return a normal VehicleData from the repository, with the expected customerId
+        given(vehicleRepository.getVehicleData(mockVinCode)).willReturn(new VehicleData(mockCustomerId));
+        // Will return normal content from the non failing proxies
+        given(customerRestServiceProxy.getCustomerData(mockCustomerId)).willReturn(new HashMap<String,Object>());
+        given(carRestServiceProxy.getCarData(mockVinCode)).willReturn(new HashMap<String,Object>());
+        // This proxy will fail with a server error
+        given(partRestServiceProxy.getPartData(mockVinCode)).willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Car service not ready"));
+
+        try {
+            // Call the service
+            vehicleService.getVehicleData(mockVinCode);
+            fail("Should have thrown an exception");
+        } catch (HttpServerErrorException e) {
+            // The error has been propagated by the service
+        }
+
+        // We know that the car service must be called
+        verify(partRestServiceProxy).getPartData(mockVinCode);
+    }
 
 }
