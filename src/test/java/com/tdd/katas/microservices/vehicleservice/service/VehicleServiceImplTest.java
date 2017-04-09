@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class VehicleServiceImplTest {
                 "[" +
                     "{" +
                         "\"partId\" : \"1\" ,"  +
-                        "\"description\" : \"Wheel\"" +
+                        "\"description\" : \"Wheels\"" +
                     "}," +
                     "{" +
                         "\"partId\" : \"2\" ,"  +
@@ -202,6 +203,83 @@ public class VehicleServiceImplTest {
             vehicleService.getVehicleData(mockVinCode);
             fail("Should have thrown an exception");
         } catch (HttpServerErrorException e) {
+            // The error has been propagated by the service
+        }
+
+        // We know that the car service must be called
+        verify(partRestServiceProxy).getPartData(mockVinCode);
+    }
+
+    @Test
+    public void The_service_propagates_the_client_errors_from_the_remote_customer_service() {
+        final String mockVinCode = "X";
+        final String mockCustomerId = "CUSTOMER_X";
+
+        // Will return a normal VehicleData from the repository, with the expected customerId
+        given(vehicleRepository.getVehicleData(mockVinCode)).willReturn(new VehicleData(mockCustomerId));
+        // Will return normal content from the non failing proxies
+        given(carRestServiceProxy.getCarData(mockVinCode)).willReturn(new HashMap<String,Object>());
+        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new ArrayList<>());
+        // This proxy will fail with a server error
+        given(customerRestServiceProxy.getCustomerData(mockCustomerId)).willThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Proxy generated a bad request"));
+
+        try {
+            // Call the service
+            vehicleService.getVehicleData(mockVinCode);
+            fail("Should have thrown an exception");
+        } catch (HttpClientErrorException e) {
+            // The error has been propagated by the service
+        }
+
+        // We know that the repository must be called to get the customerId, which is a necessary input for the customer service
+        verify(vehicleRepository).getVehicleData(mockVinCode);
+        // We know that the customer service must be called
+        verify(customerRestServiceProxy).getCustomerData(mockCustomerId);
+    }
+
+    @Test
+    public void The_service_propagates_the_client_errors_from_the_remote_car_service() {
+        final String mockVinCode = "X";
+        final String mockCustomerId = "CUSTOMER_X";
+
+        // Will return a normal VehicleData from the repository, with the expected customerId
+        given(vehicleRepository.getVehicleData(mockVinCode)).willReturn(new VehicleData(mockCustomerId));
+        // Will return normal content from the non failing proxies
+        given(customerRestServiceProxy.getCustomerData(mockCustomerId)).willReturn(new HashMap<String,Object>());
+        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new ArrayList<>());
+        // This proxy will fail with a server error
+        given(carRestServiceProxy.getCarData(mockVinCode)).willThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Proxy generated a bad request"));
+
+        try {
+            // Call the service
+            vehicleService.getVehicleData(mockVinCode);
+            fail("Should have thrown an exception");
+        } catch (HttpClientErrorException e) {
+            // The error has been propagated by the service
+        }
+
+        // We know that the car service must be called
+        verify(carRestServiceProxy).getCarData(mockVinCode);
+    }
+
+    @Test
+    public void The_service_propagates_the_client_errors_from_the_remote_part_service() {
+        final String mockVinCode = "X";
+        final String mockCustomerId = "CUSTOMER_X";
+
+        // Will return a normal VehicleData from the repository, with the expected customerId
+        given(vehicleRepository.getVehicleData(mockVinCode)).willReturn(new VehicleData(mockCustomerId));
+        // Will return normal content from the non failing proxies
+        given(customerRestServiceProxy.getCustomerData(mockCustomerId)).willReturn(new HashMap<String,Object>());
+        given(carRestServiceProxy.getCarData(mockVinCode)).willReturn(new HashMap<String,Object>());
+        // This proxy will fail with a server error
+        given(partRestServiceProxy.getPartData(mockVinCode)).willThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Proxy generated a bad request"));
+
+        try {
+            // Call the service
+            vehicleService.getVehicleData(mockVinCode);
+            fail("Should have thrown an exception");
+        } catch (HttpClientErrorException e) {
             // The error has been propagated by the service
         }
 
