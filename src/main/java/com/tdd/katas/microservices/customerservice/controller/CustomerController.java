@@ -1,7 +1,7 @@
 package com.tdd.katas.microservices.customerservice.controller;
 
 import com.tdd.katas.microservices.customerservice.service.CustomerService;
-import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
+import com.tdd.katas.microservices.customerservice.model.CustomerData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

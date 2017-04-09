@@ -1,7 +1,7 @@
 package com.tdd.katas.microservices.customerservice.service;
 
 import com.tdd.katas.microservices.customerservice.repository.CustomerRepository;
-import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
+import com.tdd.katas.microservices.customerservice.model.CustomerData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

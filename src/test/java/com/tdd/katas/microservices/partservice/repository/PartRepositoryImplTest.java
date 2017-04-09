@@ -1,6 +1,6 @@
 package com.tdd.katas.microservices.partservice.repository;
 
-import com.tdd.katas.microservices.vehicleservice.model.PartData;
+import com.tdd.katas.microservices.partservice.model.PartData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

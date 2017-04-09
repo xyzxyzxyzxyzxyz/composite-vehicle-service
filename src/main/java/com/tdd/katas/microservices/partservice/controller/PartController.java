@@ -1,7 +1,7 @@
 package com.tdd.katas.microservices.partservice.controller;
 
 import com.tdd.katas.microservices.partservice.service.PartService;
-import com.tdd.katas.microservices.vehicleservice.model.PartData;
+import com.tdd.katas.microservices.partservice.model.PartData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

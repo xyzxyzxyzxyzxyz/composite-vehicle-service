@@ -1,6 +1,6 @@
 package com.tdd.katas.microservices.customerservice.repository;
 
-import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
+import com.tdd.katas.microservices.customerservice.model.CustomerData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

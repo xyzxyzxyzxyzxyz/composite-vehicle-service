@@ -2,6 +2,9 @@ package com.tdd.katas.microservices.vehicleservice.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tdd.katas.microservices.carservice.model.CarData;
+import com.tdd.katas.microservices.customerservice.model.CustomerData;
+import com.tdd.katas.microservices.partservice.model.PartData;
 import com.tdd.katas.microservices.vehicleservice.model.*;
 import com.tdd.katas.microservices.vehicleservice.repository.VehicleRepository;
 import org.junit.Test;

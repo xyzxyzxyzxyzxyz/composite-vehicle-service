@@ -1,4 +1,4 @@
-package com.tdd.katas.microservices.vehicleservice.model;
+package com.tdd.katas.microservices.customerservice.model;
 
 public class CustomerData {
     private String customerId;

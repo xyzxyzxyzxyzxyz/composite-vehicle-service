@@ -1,7 +1,6 @@
 package com.tdd.katas.microservices.carservice.repository;
 
-import com.tdd.katas.microservices.vehicleservice.model.CarData;
-import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
+import com.tdd.katas.microservices.carservice.model.CarData;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
