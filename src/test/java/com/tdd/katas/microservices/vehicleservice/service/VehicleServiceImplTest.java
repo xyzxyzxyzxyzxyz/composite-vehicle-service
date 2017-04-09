@@ -86,7 +86,7 @@ public class VehicleServiceImplTest {
                         "\"description\" : \"door\"" +
                     "}" +
                 "]";
-        List<Map<String,Object>> mockPartDataList = objectMapper.readValue(mockPartDataListJson, new TypeReference<List<Map<String,Object>>>(){});
+        PartData[] mockPartDataList = objectMapper.readValue(mockPartDataListJson, new TypeReference<PartData[]>(){});
         given(partRestServiceProxy.getPartData(VIN)).willReturn(mockPartDataList);
 
 
@@ -94,9 +94,10 @@ public class VehicleServiceImplTest {
         CompositeVehicleData expectedCompositeVehicleData = new CompositeVehicleData(
                 new CustomerData(mockCustomerId,"Sergio", "Osuna Medina"),
                 new CarData("W111","Seat Leon","Red"),
-                Arrays.asList(
+                new PartData[] {
                         new PartData("1","Wheels"),
-                        new PartData("2","Doors"))
+                        new PartData("2","Doors")
+                }
         );
 
         // Call the service
@@ -141,7 +142,7 @@ public class VehicleServiceImplTest {
         given(vehicleRepository.getVehicleData(mockVinCode)).willReturn(new VehicleData(mockCustomerId));
         // Will return normal content from the non failing proxies
         given(carRestServiceProxy.getCarData(mockVinCode)).willReturn(new CarData());
-        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new ArrayList<>());
+        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new PartData[0]);
         // This proxy will fail with a server error
         given(customerRestServiceProxy.getCustomerData(mockCustomerId)).willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Customer service not ready"));
 
@@ -168,7 +169,7 @@ public class VehicleServiceImplTest {
         given(vehicleRepository.getVehicleData(mockVinCode)).willReturn(new VehicleData(mockCustomerId));
         // Will return normal content from the non failing proxies
         given(customerRestServiceProxy.getCustomerData(mockCustomerId)).willReturn(new CustomerData());
-        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new ArrayList<>());
+        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new PartData[0]);
         // This proxy will fail with a server error
         given(carRestServiceProxy.getCarData(mockVinCode)).willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Car service not ready"));
 
@@ -218,7 +219,7 @@ public class VehicleServiceImplTest {
         given(vehicleRepository.getVehicleData(mockVinCode)).willReturn(new VehicleData(mockCustomerId));
         // Will return normal content from the non failing proxies
         given(carRestServiceProxy.getCarData(mockVinCode)).willReturn(new CarData());
-        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new ArrayList<>());
+        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new PartData[0]);
         // This proxy will fail with a server error
         given(customerRestServiceProxy.getCustomerData(mockCustomerId)).willThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Proxy generated a bad request"));
 
@@ -245,7 +246,7 @@ public class VehicleServiceImplTest {
         given(vehicleRepository.getVehicleData(mockVinCode)).willReturn(new VehicleData(mockCustomerId));
         // Will return normal content from the non failing proxies
         given(customerRestServiceProxy.getCustomerData(mockCustomerId)).willReturn(new CustomerData());
-        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new ArrayList<>());
+        given(partRestServiceProxy.getPartData(mockVinCode)).willReturn(new PartData[0]);
         // This proxy will fail with a server error
         given(carRestServiceProxy.getCarData(mockVinCode)).willThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Proxy generated a bad request"));
 

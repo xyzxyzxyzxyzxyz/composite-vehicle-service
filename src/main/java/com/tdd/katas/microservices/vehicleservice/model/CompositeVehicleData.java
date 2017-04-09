@@ -1,13 +1,13 @@
 package com.tdd.katas.microservices.vehicleservice.model;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class CompositeVehicleData {
     private CustomerData customerData;
     private CarData carData;
-    private List<PartData> partDataList;
+    private PartData[] partDataList;
 
-    public CompositeVehicleData(CustomerData customerData, CarData carData, List<PartData> partDataList) {
+    public CompositeVehicleData(CustomerData customerData, CarData carData, PartData[] partDataList) {
         this.customerData = customerData;
         this.carData = carData;
         this.partDataList = partDataList;
@@ -29,16 +29,17 @@ public class CompositeVehicleData {
         this.carData = carData;
     }
 
-    public List<PartData> getPartDataList() {
+    public PartData[] getPartDataList() {
         return partDataList;
     }
 
-    public void setPartDataList(List<PartData> partDataList) {
+    public void setPartDataList(PartData[] partDataList) {
         this.partDataList = partDataList;
     }
 
     @Override
     public boolean equals(Object obj) {
+
         return
                 obj != null
                 && obj instanceof CompositeVehicleData
@@ -51,9 +52,9 @@ public class CompositeVehicleData {
                 && this.carData.equals(((CompositeVehicleData) obj).getCarData())
                 &&
                 (
-                    partDataList.size() == ((CompositeVehicleData) obj).getPartDataList().size()
-                    && partDataList.containsAll(((CompositeVehicleData) obj).getPartDataList())
-                    && ((CompositeVehicleData) obj).getPartDataList().containsAll(partDataList)
+                    partDataList.length == ((CompositeVehicleData) obj).getPartDataList().length
+                    &&  Arrays.asList(partDataList).containsAll(Arrays.asList(((CompositeVehicleData) obj).getPartDataList()))
+                    && Arrays.asList(((CompositeVehicleData) obj).getPartDataList()).containsAll(Arrays.asList(partDataList))
                 );
 
     }

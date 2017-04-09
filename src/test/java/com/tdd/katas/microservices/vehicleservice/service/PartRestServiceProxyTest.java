@@ -2,6 +2,7 @@ package com.tdd.katas.microservices.vehicleservice.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tdd.katas.microservices.vehicleservice.model.PartData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.HttpServerErrorException;
-
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -56,13 +54,13 @@ public class PartRestServiceProxyTest {
                     "}" +
                 "]";
 
-        List<Map<String,Object>> expectedPartDataList = objectMapper.readValue(mockPartData, new TypeReference<List<Map<String,Object>>>(){});
+        PartData[] expectedPartDataList = objectMapper.readValue(mockPartData, new TypeReference<PartData[]>(){});
 
         this.server.expect(requestTo("/parts/" + vinCode))
                 .andRespond(withSuccess(mockPartData, MediaType.APPLICATION_JSON));
-        List<Map<String,Object>> actualPartDataList = partRestServiceProxy.getPartData(vinCode);
+        PartData[] actualPartDataList = partRestServiceProxy.getPartData(vinCode);
 
-        assertEquals("Part data lists must match", expectedPartDataList, actualPartDataList);
+        assertArrayEquals("Part data lists must match", expectedPartDataList, actualPartDataList);
 
     }
 
@@ -74,7 +72,7 @@ public class PartRestServiceProxyTest {
         this.server.expect(requestTo("/parts/" + vinCode))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        List<Map<String,Object>> actualPartData = partRestServiceProxy.getPartData(vinCode);
+        PartData[]  actualPartData = partRestServiceProxy.getPartData(vinCode);
 
         assertNull("Part must not exist", actualPartData);
 

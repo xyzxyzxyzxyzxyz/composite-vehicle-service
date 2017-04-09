@@ -1,6 +1,9 @@
 package com.tdd.katas.microservices.vehicleservice.controller;
 
-import com.tdd.katas.microservices.vehicleservice.model.*;
+import com.tdd.katas.microservices.vehicleservice.model.CarData;
+import com.tdd.katas.microservices.vehicleservice.model.CompositeVehicleData;
+import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
+import com.tdd.katas.microservices.vehicleservice.model.PartData;
 import com.tdd.katas.microservices.vehicleservice.service.VehicleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,15 +15,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
-
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -51,9 +51,10 @@ public class VehicleControllerTest {
         CompositeVehicleData expectedCompositeVehicleData = new CompositeVehicleData(
                 new CustomerData("1","Sergio", "Osuna Medina"),
                 new CarData("W111","Seat Leon","Red"),
-                Arrays.asList(
+                new PartData[]{
                     new PartData("1","Wheels"),
-                    new PartData("2","Doors"))
+                    new PartData("2","Doors")
+                }
         );
 
 
@@ -71,10 +72,10 @@ public class VehicleControllerTest {
                 .andExpect(jsonPath("$.carData.plateNumber", is(expectedCompositeVehicleData.getCarData().getPlateNumber())))
                 .andExpect(jsonPath("$.carData.model", is(expectedCompositeVehicleData.getCarData().getModel())))
                 .andExpect(jsonPath("$.carData.color", is(expectedCompositeVehicleData.getCarData().getColor())))
-                .andExpect(jsonPath("$.partDataList[0].partId", is(expectedCompositeVehicleData.getPartDataList().get(0).getPartId())))
-                .andExpect(jsonPath("$.partDataList[0].description", is(expectedCompositeVehicleData.getPartDataList().get(0).getDescription())))
-                .andExpect(jsonPath("$.partDataList[1].partId", is(expectedCompositeVehicleData.getPartDataList().get(1).getPartId())))
-                .andExpect(jsonPath("$.partDataList[1].description", is(expectedCompositeVehicleData.getPartDataList().get(1).getDescription())));
+                .andExpect(jsonPath("$.partDataList[0].partId", is(expectedCompositeVehicleData.getPartDataList()[0].getPartId())))
+                .andExpect(jsonPath("$.partDataList[0].description", is(expectedCompositeVehicleData.getPartDataList()[0].getDescription())))
+                .andExpect(jsonPath("$.partDataList[1].partId", is(expectedCompositeVehicleData.getPartDataList()[1].getPartId())))
+                .andExpect(jsonPath("$.partDataList[1].description", is(expectedCompositeVehicleData.getPartDataList()[1].getDescription())));
 
         verify(vehicleService).getVehicleData(VIN);
 

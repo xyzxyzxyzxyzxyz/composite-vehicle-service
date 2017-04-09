@@ -1,5 +1,6 @@
 package com.tdd.katas.microservices.vehicleservice.service;
 
+import com.tdd.katas.microservices.vehicleservice.model.PartData;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ class PartRestServiceProxy {
         restTemplate = restTemplateBuilder.build();
     }
 
-    public List<Map<String,Object>> getPartData(String vinCode) throws HttpClientErrorException, HttpServerErrorException{
+    public PartData[] getPartData(String vinCode) throws HttpClientErrorException, HttpServerErrorException{
         try {
-            ResponseEntity<List> responseEntity = restTemplate.getForEntity(URL + "/" + vinCode, List.class);
+            ResponseEntity<PartData[]> responseEntity = restTemplate.getForEntity(URL + "/" + vinCode, PartData[].class);
             return responseEntity.getBody();
         }
         catch(HttpClientErrorException e) {

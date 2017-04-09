@@ -29,15 +29,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         CarData carData = carRestServiceProxy.getCarData(vin);
 
-        List<Map<String,Object>> partDataProxyOutput = partRestServiceProxy.getPartData(vin);
-        List<PartData> partDataList = new ArrayList<>();
-        for (Map<String,Object> partItem : partDataProxyOutput) {
-            PartData part = new PartData(
-                    (String) partItem.get("partId"),
-                    (String) partItem.get("description")
-            );
-            partDataList.add(part);
-        }
+        PartData[] partDataList = partRestServiceProxy.getPartData(vin);
 
         CompositeVehicleData compositeVehicleData = new CompositeVehicleData(customerData, carData, partDataList);
 
