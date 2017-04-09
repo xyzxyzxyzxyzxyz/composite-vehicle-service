@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -113,6 +114,22 @@ public class VehicleServiceImplTest {
         verify(partRestServiceProxy).getPartData(VIN);
 
         assertEquals("The service should return the CompositeVehicleData as provided by the repository", expectedCompositeVehicleData, actualCompositeVehicleData);
+    }
+
+    @Test
+    public void The_service_returns_null_if_the_repository_cannot_find_the_vin() throws IOException {
+        String VIN = "X";
+
+        // Mock the VehicleRepository output
+        given(vehicleRepository.getVehicleData(VIN)).willReturn(null);
+
+        // Call the service
+        CompositeVehicleData actualCompositeVehicleData = vehicleService.getVehicleData(VIN);
+
+        assertNull("The service should return null, because the repository wasn't able to find any data for the VIN code", actualCompositeVehicleData);
+
+        // The service must call the repository with the same input
+        verify(vehicleRepository).getVehicleData(VIN);
     }
 
 
