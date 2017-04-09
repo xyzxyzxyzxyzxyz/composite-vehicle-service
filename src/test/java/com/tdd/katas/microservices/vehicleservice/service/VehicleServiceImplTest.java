@@ -149,7 +149,7 @@ public class VehicleServiceImplTest {
             // Call the service
             vehicleService.getVehicleData(mockVinCode);
             fail("Should have thrown an exception");
-        } catch (IllegalStateException e) {
+        } catch (HttpServerErrorException e) {
             // The error has been propagated by the service
         }
 
