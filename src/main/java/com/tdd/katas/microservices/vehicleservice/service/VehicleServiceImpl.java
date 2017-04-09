@@ -32,12 +32,7 @@ public class VehicleServiceImpl implements VehicleService {
                 (String) customerDataProxyOutput.get("surnames")
         );
 
-        Map<String,Object> carDataProxyOutput = carRestServiceProxy.getCarData(vin);
-        CarData carData = new CarData(
-                (String) carDataProxyOutput.get("plateNumber"),
-                (String) carDataProxyOutput.get("model"),
-                (String) carDataProxyOutput.get("color")
-        );
+        CarData carData = carRestServiceProxy.getCarData(vin);
 
         List<Map<String,Object>> partDataProxyOutput = partRestServiceProxy.getPartData(vin);
         List<PartData> partDataList = new ArrayList<>();

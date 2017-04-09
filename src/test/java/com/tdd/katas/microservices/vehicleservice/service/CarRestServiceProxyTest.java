@@ -2,6 +2,7 @@ package com.tdd.katas.microservices.vehicleservice.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tdd.katas.microservices.vehicleservice.model.CarData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +54,11 @@ public class CarRestServiceProxyTest {
                 "\"color\" : \"Red\" " +
             "}";
 
-        Map<String,Object> expectedCarData = objectMapper.readValue(mockCarData, new TypeReference<HashMap<String,Object>>(){});
+        CarData expectedCarData = objectMapper.readValue(mockCarData, new TypeReference<CarData>(){});
 
         this.server.expect(requestTo("/cars/" + vinCode))
                 .andRespond(withSuccess(mockCarData, MediaType.APPLICATION_JSON));
-        Map<String,Object> actualCarData = carRestServiceProxy.getCarData(vinCode);
+        CarData actualCarData = carRestServiceProxy.getCarData(vinCode);
 
         assertEquals("Car data must match", expectedCarData, actualCarData);
         
@@ -71,7 +72,7 @@ public class CarRestServiceProxyTest {
         this.server.expect(requestTo("/cars/" + vinCode))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        Map<String,Object> actualCarData = carRestServiceProxy.getCarData(vinCode);
+        CarData actualCarData = carRestServiceProxy.getCarData(vinCode);
 
         assertNull("Car must not exist", actualCarData);
 
