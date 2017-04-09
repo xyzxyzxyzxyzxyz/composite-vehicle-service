@@ -1,9 +1,5 @@
 package com.tdd.katas.microservices.vehicleservice.model;
 
-import com.tdd.katas.microservices.carservice.model.CarData;
-import com.tdd.katas.microservices.customerservice.model.CustomerData;
-import com.tdd.katas.microservices.partservice.model.PartData;
-
 import java.util.List;
 
 public class CompositeVehicleData {
