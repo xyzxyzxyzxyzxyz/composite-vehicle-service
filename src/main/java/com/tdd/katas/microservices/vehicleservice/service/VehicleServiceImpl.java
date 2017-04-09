@@ -27,24 +27,24 @@ public class VehicleServiceImpl implements VehicleService {
 
         Map<String,Object> customerDataProxyOutput = customerRestServiceProxy.getCustomerData(vehicleData.getCustomerId());
         CustomerData customerData = new CustomerData(
-                customerDataProxyOutput.get("customerId").toString(),
-                customerDataProxyOutput.get("name").toString(),
-                customerDataProxyOutput.get("surnames").toString()
+                (String) customerDataProxyOutput.get("customerId"),
+                (String) customerDataProxyOutput.get("name"),
+                (String) customerDataProxyOutput.get("surnames")
         );
 
         Map<String,Object> carDataProxyOutput = carRestServiceProxy.getCarData(vin);
         CarData carData = new CarData(
-                carDataProxyOutput.get("plateNumber").toString(),
-                carDataProxyOutput.get("model").toString(),
-                carDataProxyOutput.get("color").toString()
+                (String) carDataProxyOutput.get("plateNumber"),
+                (String) carDataProxyOutput.get("model"),
+                (String) carDataProxyOutput.get("color")
         );
 
         List<Map<String,Object>> partDataProxyOutput = partRestServiceProxy.getPartData(vin);
         List<PartData> partDataList = new ArrayList<>();
         for (Map<String,Object> partItem : partDataProxyOutput) {
             PartData part = new PartData(
-                    partItem.get("partId").toString(),
-                    partItem.get("description").toString()
+                    (String) partItem.get("partId"),
+                    (String) partItem.get("description")
             );
             partDataList.add(part);
         }
