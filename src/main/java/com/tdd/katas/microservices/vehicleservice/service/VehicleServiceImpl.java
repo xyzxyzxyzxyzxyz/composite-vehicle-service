@@ -25,12 +25,7 @@ public class VehicleServiceImpl implements VehicleService {
     public CompositeVehicleData getVehicleData(String vin) {
         VehicleData vehicleData = vehicleRepository.getVehicleData(vin);
 
-        Map<String,Object> customerDataProxyOutput = customerRestServiceProxy.getCustomerData(vehicleData.getCustomerId());
-        CustomerData customerData = new CustomerData(
-                (String) customerDataProxyOutput.get("customerId"),
-                (String) customerDataProxyOutput.get("name"),
-                (String) customerDataProxyOutput.get("surnames")
-        );
+        CustomerData customerData = customerRestServiceProxy.getCustomerData(vehicleData.getCustomerId());
 
         CarData carData = carRestServiceProxy.getCarData(vin);
 

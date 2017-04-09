@@ -1,5 +1,6 @@
 package com.tdd.katas.microservices.vehicleservice.service;
 
+import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,9 @@ class CustomerRestServiceProxy {
         restTemplate = restTemplateBuilder.build();
     }
 
-    public Map<String,Object> getCustomerData(String customerId) throws HttpClientErrorException, HttpServerErrorException {
+    public CustomerData getCustomerData(String customerId) throws HttpClientErrorException, HttpServerErrorException {
         try {
-            ResponseEntity<HashMap> responseEntity = restTemplate.getForEntity(URL + "/" + customerId, HashMap.class);
+            ResponseEntity<CustomerData> responseEntity = restTemplate.getForEntity(URL + "/" + customerId, CustomerData.class);
             return responseEntity.getBody();
         }
         catch(HttpClientErrorException e) {

@@ -2,6 +2,7 @@ package com.tdd.katas.microservices.vehicleservice.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tdd.katas.microservices.vehicleservice.model.CustomerData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.HttpServerErrorException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -55,11 +53,11 @@ public class CustomerRestServiceProxyTest {
                 "\"surnames\" : \"De los Palotes\" " +
             "}";
 
-        Map<String, Object> expectedCustomerData = customerMapper.readValue(mockCustomerData, new TypeReference<HashMap<String,Object>>(){});
+        CustomerData expectedCustomerData = customerMapper.readValue(mockCustomerData, new TypeReference<CustomerData>(){});
 
         this.server.expect(requestTo("/customers/" + customerId))
                 .andRespond(withSuccess(mockCustomerData, MediaType.APPLICATION_JSON));
-        Map<String,Object> actualCustomerData = customerRestServiceProxy.getCustomerData(customerId);
+        CustomerData actualCustomerData = customerRestServiceProxy.getCustomerData(customerId);
 
         assertEquals("Customer data must match", expectedCustomerData, actualCustomerData);
         
@@ -74,7 +72,7 @@ public class CustomerRestServiceProxyTest {
         this.server.expect(requestTo("/customers/" + customerId))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        Map<String,Object> actualCustomerData = customerRestServiceProxy.getCustomerData(customerId);
+        CustomerData actualCustomerData = customerRestServiceProxy.getCustomerData(customerId);
 
         assertNull("Customer must not exist", actualCustomerData);
 
