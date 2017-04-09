@@ -1,6 +1,8 @@
 package com.tdd.katas.microservices.vehicleservice.service;
 
 import com.tdd.katas.microservices.vehicleservice.model.PartData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,16 +11,19 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Map;
-
 @Component
 class PartRestServiceProxy {
     private final RestTemplate restTemplate;
     private static String URL = "/parts";
 
-    public PartRestServiceProxy(RestTemplateBuilder restTemplateBuilder) {
-        restTemplate = restTemplateBuilder.build();
+    @Autowired
+    public PartRestServiceProxy (
+            RestTemplateBuilder restTemplateBuilder,
+            @Value("${part.microservice.url}") String baseUrl,
+            @Value("${part.microservice.port}") int port) {
+        restTemplate = restTemplateBuilder
+                .rootUri(baseUrl + ":" + port)
+                .build();
     }
 
     public PartData[] getPartData(String vinCode) throws HttpClientErrorException, HttpServerErrorException{

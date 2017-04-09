@@ -1,6 +1,8 @@
 package com.tdd.katas.microservices.vehicleservice.service;
 
 import com.tdd.katas.microservices.vehicleservice.model.CarData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,14 @@ class CarRestServiceProxy {
     private final RestTemplate restTemplate;
     private static String URL = "/cars";
 
-    public CarRestServiceProxy(RestTemplateBuilder restTemplateBuilder) {
-        restTemplate = restTemplateBuilder.build();
+    @Autowired
+    public CarRestServiceProxy(
+            RestTemplateBuilder restTemplateBuilder,
+            @Value("${car.microservice.url}") String baseUrl,
+            @Value("${car.microservice.port}") int port) {
+        restTemplate = restTemplateBuilder
+                .rootUri(baseUrl + ":" + port)
+                .build();
     }
 
     public CarData getCarData(String vinCode) throws HttpClientErrorException, HttpServerErrorException {
