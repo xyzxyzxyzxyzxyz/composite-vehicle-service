@@ -11,13 +11,22 @@ public class VehicleRepositoryImpl implements VehicleRepository{
 
     private Map<String, VehicleData> map = new HashMap<>();
 
-    void store(String vin, VehicleData vehicleData) {
+    @Override
+    public void createVehicleData(String vin, VehicleData vehicleData) throws IllegalStateException {
+        if (map.containsKey(vin)) {
+            throw new IllegalStateException("Repository already contains a VehicleData with VIN: ["+vin+"]");
+        }
         map.put(vin, vehicleData);
     }
 
     @Override
     public VehicleData getVehicleData(String vin) {
         return map.get(vin);
+    }
+
+    @Override
+    public void deleteAllVehicleData() {
+        map.clear();
     }
 
 }
