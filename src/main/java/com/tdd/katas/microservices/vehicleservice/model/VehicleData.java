@@ -3,6 +3,9 @@ package com.tdd.katas.microservices.vehicleservice.model;
 public class VehicleData {
     private String customerId;
 
+    public VehicleData() {
+    }
+
     public VehicleData(String customerId) {
         this.customerId = customerId;
     }
